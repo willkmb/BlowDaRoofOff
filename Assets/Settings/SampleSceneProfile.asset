@@ -75,6 +75,25 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-2046879295663686417
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb60a22f311433c4c962b888d1393f88, type: 3}
+  m_Name: PaniniProjection
+  m_EditorClassIdentifier: 
+  active: 1
+  distance:
+    m_OverrideState: 1
+    m_Value: 0.271
+  cropToFit:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-1363603347783741869
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -161,6 +180,9 @@ MonoBehaviour:
   - {fileID: -3357603926938260329}
   - {fileID: 7010010357853552371}
   - {fileID: -1363603347783741869}
+  - {fileID: 8741296070882836485}
+  - {fileID: 960502471879375807}
+  - {fileID: -2046879295663686417}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -201,6 +223,25 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 1
     m_Value: 647
+--- !u!114 &960502471879375807
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
+  m_Name: WhiteBalance
+  m_EditorClassIdentifier: 
+  active: 0
+  temperature:
+    m_OverrideState: 1
+    m_Value: 10
+  tint:
+    m_OverrideState: 1
+    m_Value: 11
 --- !u!114 &7010010357853552371
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -219,7 +260,7 @@ MonoBehaviour:
     m_Value: 0.22
   contrast:
     m_OverrideState: 1
-    m_Value: 9
+    m_Value: 13
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -254,3 +295,25 @@ MonoBehaviour:
   clamp:
     m_OverrideState: 0
     m_Value: 0.05
+--- !u!114 &8741296070882836485
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
+  m_Name: SplitToning
+  m_EditorClassIdentifier: 
+  active: 1
+  shadows:
+    m_OverrideState: 1
+    m_Value: {r: 0.52020293, g: 0.6070716, b: 0.6603774, a: 1}
+  highlights:
+    m_OverrideState: 1
+    m_Value: {r: 0.764151, g: 0.2559185, b: 0.2559185, a: 1}
+  balance:
+    m_OverrideState: 1
+    m_Value: -6
