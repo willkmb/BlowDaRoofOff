@@ -14,6 +14,8 @@ public class NoteHitDetector : MonoBehaviour
     bool hasBeenHit = false;
     private ParticleSystem hitParticles;
     private StickerSpawning sticker;
+    private Combo combo;
+    [SerializeField] GameObject newnote;
 
     [Header("Colours")]
     [SerializeField] Color blankCol = Color.white;
@@ -30,11 +32,12 @@ public class NoteHitDetector : MonoBehaviour
     {
         hitZone = GameObject.FindWithTag("HitZone").transform;
         sticker = GameObject.FindWithTag("stickerZone").GetComponent<StickerSpawning>();
+        combo = GameObject.FindWithTag("Combo").GetComponent<Combo>();
         master = FindFirstObjectByType<MasterScript>();
         hitRange = master.HitRangeBefore;
         colChangeRange = master.ColChangeRangeBefore;
         hitParticles = GetComponentInChildren<ParticleSystem>();
-        rend = GetComponent<Renderer>();
+        rend = newnote.GetComponent<Renderer>();
         mpb = new MaterialPropertyBlock();
         activeNotes.Add(this);
     }
@@ -64,6 +67,7 @@ public class NoteHitDetector : MonoBehaviour
         {
             hasBeenHit = true;
             sticker.Spawn("Miss");
+            combo.RegisterMiss();
             CameraShake.Instance.ShakeMiss();
             Destroy(gameObject);
             return;
@@ -75,9 +79,9 @@ public class NoteHitDetector : MonoBehaviour
 
             float diffFromTarget = Mathf.Abs(distance - master.HitRangeBefore);
 
-            if (diffFromTarget <= perfectTolerance) sticker.Spawn("Perfect");
-            else if (diffFromTarget <= goodTolerance) sticker.Spawn("Good");
-            else sticker.Spawn("Late");
+            if (diffFromTarget <= perfectTolerance) { sticker.Spawn("Perfect"); combo.RegisterPerfect(); }
+            else if (diffFromTarget <= goodTolerance) { sticker.Spawn("Good"); combo.RegisterGood(); }
+            else { sticker.Spawn("Late"); combo.RegisterLate(); }
 
             StartCoroutine(HitRoutine());
         }

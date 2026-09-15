@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HitZone
   - stickerZone
+  - Combo
   layers:
   - Default
   - TransparentFX
