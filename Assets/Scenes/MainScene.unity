@@ -4593,6 +4593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 522287834}
   - component: {fileID: 522287835}
+  - component: {fileID: 522287836}
   m_Layer: 5
   m_Name: JuiceBok
   m_TagString: Untagged
@@ -4646,6 +4647,26 @@ MonoBehaviour:
   - {fileID: 931298000}
   - {fileID: 94813066}
   speed: 0.3
+--- !u!114 &522287836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522287833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a68254cf6d7d04fb41d3af8a63f198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 832575518}
+  chromaticMin: 0.17
+  chromaticMax: 1
+  chromaticSpeed: 5
+  hueMin: -10
+  hueMax: 10
+  hueSpeed: 5
+  fadeDuration: 0.5
 --- !u!4 &529061373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2072fb5ab8859c54da61b3e97011e9b8, type: 3}
@@ -5726,7 +5747,6 @@ GameObject:
   - component: {fileID: 647930172}
   - component: {fileID: 647930171}
   - component: {fileID: 647930173}
-  - component: {fileID: 647930174}
   m_Layer: 5
   m_Name: StickerZone
   m_TagString: stickerZone
@@ -5809,23 +5829,6 @@ MonoBehaviour:
   missPrefab: {fileID: 5042274485975730761, guid: 11a601d4866a89e4eaf335dc7d0930a2, type: 3}
   spawnArea: {fileID: 647930170}
   spawnParent: {fileID: 811745899}
---- !u!114 &647930174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647930169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf489dc6c7157aa42b3b24a55812b9d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imagePrefab: {fileID: 5423510478119431788, guid: cee16e71898276c489dc30489e9cd119, type: 3}
-  spawnArea: {fileID: 647930170}
-  spawnParent: {fileID: 1986683759}
-  spawnInterval: 5
-  swapDelay: 0.4
 --- !u!1001 &650228521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14390,6 +14393,7 @@ RectTransform:
   - {fileID: 522287834}
   - {fileID: 1448615520}
   - {fileID: 1007313425}
+  - {fileID: 1653517936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -14418,12 +14422,14 @@ MonoBehaviour:
   - {fileID: 1746262626}
   - {fileID: 931298002}
   - {fileID: 94813068}
+  drainDur: 6.5
+  JB: {fileID: 522287836}
   embarrassmentPerLate: 1
   embarrassmentPerMiss: 3
   maxEmbarrassment: 100
   embarrassment: 0
   embarrassmentMeter: {fileID: 482835153}
-  tom: {fileID: 0}
+  tom: {fileID: 1653517935}
   characters:
   - {fileID: 1277386480}
   - {fileID: 937244999}
@@ -15501,6 +15507,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2072fb5ab8859c54da61b3e97011e9b8, type: 3}
   m_PrefabInstance: {fileID: 1127077651}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1653517935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1653517936}
+  - component: {fileID: 1653517937}
+  m_Layer: 5
+  m_Name: TomatoHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1653517936
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653517935}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1472152212}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1653517937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653517935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf489dc6c7157aa42b3b24a55812b9d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePrefab: {fileID: 5423510478119431788, guid: cee16e71898276c489dc30489e9cd119, type: 3}
+  spawnArea: {fileID: 647930170}
+  spawnParent: {fileID: 1986683759}
+  spawnInterval: 4.5
+  swapDelay: 0.4
 --- !u!1 &1670195481
 GameObject:
   m_ObjectHideFlags: 0

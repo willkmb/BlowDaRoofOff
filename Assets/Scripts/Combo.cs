@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -13,6 +15,11 @@ public class Combo : MonoBehaviour
 
     [Header("Fill UI")]
     public Image[] comboFill;
+
+    [Header("combo drain")]
+    [SerializeField] float drainDur = 2f;
+    private bool isDrain = false;
+    public JuiceBoxDur JB;
 
     [Header("Embarrassment Meter")]
     public float embarrassmentPerLate = 5f;
@@ -33,6 +40,7 @@ public class Combo : MonoBehaviour
 
     public void RegisterPerfect()
     {
+        if (isDrain) return;
         combo = Mathf.Min(maxCombo, combo + comboPerfect);
         updateComboFill();
         CheckComboFull();
@@ -40,6 +48,7 @@ public class Combo : MonoBehaviour
 
     public void RegisterGood()
     {
+        if(isDrain) return;
         combo = Mathf.Min(maxCombo, combo + comboGood);
         updateComboFill();
         CheckComboFull();
@@ -78,8 +87,28 @@ public class Combo : MonoBehaviour
         if (combo >= maxCombo)
         {
             Debug.Log("Combo is full!");
-            combo = 0;
+            StartCoroutine(drainCombo());
         }
+    }
+
+    IEnumerator drainCombo()
+    {
+        isDrain = true;
+        float startCombo = combo;
+        float elapsed = 0f;
+        while (elapsed < drainDur)
+        {
+            elapsed += Time.deltaTime;
+            combo = Mathf.Lerp(startCombo, 0f, elapsed / drainDur);
+            JB.StartPulse();
+            updateComboFill();
+            yield return null;
+        }
+
+        combo = 0f;
+        JB.StopPulse();
+        updateComboFill();
+        isDrain = false;
     }
 
     void CheckEmbarrassmentFull()
@@ -93,9 +122,9 @@ public class Combo : MonoBehaviour
             }
         }
 
-        if(embarrassment > 65f)
+        if(embarrassment > 50f)
         {
-            tom.SetActive(false);
+            tom.SetActive(true);
         }
     }
 }
