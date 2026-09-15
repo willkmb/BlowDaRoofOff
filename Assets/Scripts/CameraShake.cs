@@ -6,7 +6,8 @@ public class CameraShake : MonoBehaviour
     public static CameraShake Instance;
 
     public float duration = 0.15f;
-    public float magnitude = 0.1f;
+    public float magnitude = 0.03f;
+    public float missMagnitude = 1f;
 
     Vector3 originalPos;
 
@@ -19,18 +20,25 @@ public class CameraShake : MonoBehaviour
     {
         StopAllCoroutines();
         originalPos = transform.localPosition;
-        StartCoroutine(DoShake());
+        StartCoroutine(DoShake(magnitude));
     }
 
-    IEnumerator DoShake()
+    public void ShakeMiss()
+    {
+        StopAllCoroutines();
+        originalPos = transform.localPosition;
+        StartCoroutine(DoShake(missMagnitude));
+    }
+
+    IEnumerator DoShake(float shakeMag)
     {
         float elapsed = 0f;
         float seed = Random.Range(0f, 100f);
 
         while (elapsed < duration)
         {
-            float x = (Mathf.PerlinNoise(seed, Time.time * 25f) - 0.5f) * magnitude;
-            float y = (Mathf.PerlinNoise(seed + 1f, Time.time * 25f) - 0.5f) * magnitude;
+            float x = (Mathf.PerlinNoise(seed, Time.time * 25f) - 0.5f) * shakeMag;
+            float y = (Mathf.PerlinNoise(seed + 1f, Time.time * 25f) - 0.5f) * shakeMag;
 
             transform.localPosition = originalPos + new Vector3(x, y, 0f);
 

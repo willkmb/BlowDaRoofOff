@@ -64,6 +64,7 @@ public class NoteHitDetector : MonoBehaviour
         {
             hasBeenHit = true;
             sticker.Spawn("Miss");
+            CameraShake.Instance.ShakeMiss();
             Destroy(gameObject);
             return;
         }

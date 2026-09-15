@@ -2684,7 +2684,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.15
-  magnitude: 0.01
+  magnitude: 0.03
+  missMagnitude: 1
 --- !u!1001 &341413305
 PrefabInstance:
   m_ObjectHideFlags: 0
