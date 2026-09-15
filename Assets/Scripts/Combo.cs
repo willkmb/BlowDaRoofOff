@@ -20,6 +20,7 @@ public class Combo : MonoBehaviour
     public float maxEmbarrassment = 100f;
     public float embarrassment = 0f;
     public Image embarrassmentMeter;
+    [SerializeField] GameObject tom;
 
     [Header("Characters")]
     public GameObject[] characters;
@@ -90,6 +91,11 @@ public class Combo : MonoBehaviour
             {
                 cha.GetComponent<Animation>().Stop();
             }
+        }
+
+        if(embarrassment > 65f)
+        {
+            tom.SetActive(false);
         }
     }
 }

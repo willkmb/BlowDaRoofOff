@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class TomatoScript : MonoBehaviour
 {
@@ -11,18 +12,12 @@ public class TomatoScript : MonoBehaviour
 
     [Header("Spawning")]
     [SerializeField] float spawnInterval = 5f;
-    public bool shouldSpawn = false;
+    [SerializeField] float swapDelay = 0.4f;
 
     private float timer = 0f;
 
     void Update()
     {
-        if (!shouldSpawn)
-        {
-            timer = 0f;
-            return;
-        }
-
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval)
@@ -34,12 +29,6 @@ public class TomatoScript : MonoBehaviour
 
     void Spawn()
     {
-        if (imagePrefab == null)
-        {
-            Debug.LogWarning("No prefab assigned to spawn.");
-            return;
-        }
-
         GameObject spawnedImage = Instantiate(imagePrefab);
         RectTransform rectTransform = spawnedImage.GetComponent<RectTransform>();
         rectTransform.SetParent(spawnParent, false);
@@ -49,5 +38,21 @@ public class TomatoScript : MonoBehaviour
         float randomX = Random.Range(corners[0].x, corners[2].x);
         float randomY = Random.Range(corners[0].y, corners[2].y);
         rectTransform.position = new Vector3(randomX, randomY, rectTransform.position.z);
+
+        Transform activeSprite = spawnedImage.transform.GetChild(0);
+        Transform inactiveSprite = spawnedImage.transform.GetChild(1);
+
+        activeSprite.gameObject.SetActive(true);
+        inactiveSprite.gameObject.SetActive(false);
+
+        StartCoroutine(SwapAfterDelay(activeSprite.gameObject, inactiveSprite.gameObject, swapDelay));
     }
+
+    IEnumerator SwapAfterDelay(GameObject active, GameObject inactive, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        active.SetActive(false);
+        inactive.SetActive(true);
+    }
+
 }
