@@ -59,9 +59,9 @@ public class NoteHitDetector : MonoBehaviour
 
         float t = Mathf.InverseLerp(colChangeRange, allowedRange, distance);
         Color c = Color.Lerp(blankCol, Ready, t);
-        rend.GetPropertyBlock(mpb);
+        rend.GetPropertyBlock(mpb, 0);
         mpb.SetColor(BaseColID, c);
-        rend.SetPropertyBlock(mpb);
+        rend.SetPropertyBlock(mpb, 0);
 
         if (!before)
         {
