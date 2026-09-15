@@ -253,6 +253,8 @@ MonoBehaviour:
   key: 106
   blankCol: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
   Ready: {r: 0.14509805, g: 0.6901961, b: 0.44705883, a: 1}
+  perfectRange: 0.5
+  goodRange: 1
 --- !u!111 &756778196599772765
 Animation:
   m_ObjectHideFlags: 0

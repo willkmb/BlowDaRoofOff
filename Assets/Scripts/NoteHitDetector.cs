@@ -13,17 +13,23 @@ public class NoteHitDetector : MonoBehaviour
     MaterialPropertyBlock mpb;
     bool hasBeenHit = false;
     private ParticleSystem hitParticles;
+    private StickerSpawning sticker;
 
     [Header("Colours")]
     [SerializeField] Color blankCol = Color.white;
     [SerializeField] Color Ready = Color.red;
     static readonly int BaseColID = Shader.PropertyToID("_BaseCol");
 
+    [Header("Judgement Windows")]
+    [SerializeField] float perfectTolerance = 0.4f;
+    [SerializeField] float goodTolerance = 0.6f;
+
     static List<NoteHitDetector> activeNotes = new List<NoteHitDetector>();
 
     private void Start()
     {
         hitZone = GameObject.FindWithTag("HitZone").transform;
+        sticker = GameObject.FindWithTag("stickerZone").GetComponent<StickerSpawning>();
         master = FindFirstObjectByType<MasterScript>();
         hitRange = master.HitRangeBefore;
         colChangeRange = master.ColChangeRangeBefore;
@@ -54,12 +60,29 @@ public class NoteHitDetector : MonoBehaviour
         mpb.SetColor(BaseColID, c);
         rend.SetPropertyBlock(mpb);
 
-        if (distance <= allowedRange && Input.GetKeyDown(key) && IsClosestForKey(distance))
+        if (!before)
         {
             hasBeenHit = true;
+            sticker.Spawn("Miss");
+            Destroy(gameObject);
+            return;
+        }
+
+        if (distance <= master.HitRangeBefore && Input.GetKeyDown(key) && IsClosestForKey(distance))
+        {
+            hasBeenHit = true;
+
+            float diffFromTarget = Mathf.Abs(distance - master.HitRangeBefore);
+
+            if (diffFromTarget <= perfectTolerance) sticker.Spawn("Perfect");
+            else if (diffFromTarget <= goodTolerance) sticker.Spawn("Good");
+            else sticker.Spawn("Late");
+
             StartCoroutine(HitRoutine());
         }
     }
+
+
 
     bool IsClosestForKey(float myDistance)
     {
