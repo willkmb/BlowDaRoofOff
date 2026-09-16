@@ -14,6 +14,7 @@ public class CameraShake : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        originalPos = transform.localPosition;
     }
 
     public void Shake()

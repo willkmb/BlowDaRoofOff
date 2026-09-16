@@ -11,6 +11,11 @@ public class BeatRecorder : MonoBehaviour
     public KeyCode[] laneKeys = { KeyCode.D, KeyCode.F, KeyCode.J, KeyCode.K, KeyCode.L };
     public float laneSpacing = 1.5f;
 
+    public KeyCode pauseKey = KeyCode.Space;
+    public KeyCode undoKey = KeyCode.LeftBracket;
+    private bool isPaused = false;
+    public float resumeLeadIn = 3f;
+
     struct Marker
     {
         public Transform transform;
@@ -22,6 +27,21 @@ public class BeatRecorder : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKeyDown(pauseKey))
+        {
+            togglePause();
+        }
+
+        if (isPaused)
+        {
+            if (Input.GetKeyDown(undoKey))
+            {
+                UndoLastMarker();
+            }
+            return;
+        }
+
         for (int i = 0; i < laneKeys.Length; i++)
         {
             if (Input.GetKeyDown(laneKeys[i]))
@@ -30,14 +50,64 @@ public class BeatRecorder : MonoBehaviour
             }
         }
 
-        float songTime = audioSource.time;
+        UpdateMarkerPositions(audioSource.time);
+    }
+
+    void UpdateMarkerPositions(float songTime)
+    {
         foreach (Marker m in markers)
         {
+            if (m.transform == null) continue;
+
             float xLocal = (m.hitTime - songTime) * speed;
             Vector3 localOffset = new Vector3(xLocal, 0f, m.laneOffset);
             m.transform.position = noteTrack.position + noteTrack.rotation * localOffset;
             m.transform.rotation = noteTrack.rotation;
         }
+    }
+
+    void togglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            audioSource.Pause();
+        }
+        else
+        {
+            float resumeTime = Mathf.Max(0f, audioSource.time - resumeLeadIn);
+            audioSource.time = resumeTime;
+            UpdateMarkerPositions(resumeTime); // snap cubes to match before playback starts
+
+            audioSource.UnPause();
+        }
+    }
+
+    void UndoLastMarker()
+    {
+        if (markers.Count == 0)
+        {
+            Debug.Log("No markers to undo.");
+            return;
+        }
+
+        int lastIndex = markers.Count - 1;
+        Marker last = markers[lastIndex];
+
+        // Destroy the cube and remove it from the list
+        if (last.transform != null)
+        {
+            Destroy(last.transform.gameObject);
+        }
+        markers.RemoveAt(lastIndex);
+
+        // Rewind the song to that marker's time (still paused)
+        audioSource.time = last.hitTime;
+
+        UpdateMarkerPositions(last.hitTime);
+
+        Debug.Log("Undid marker, rewound to " + last.hitTime + ". Press " + pauseKey + " to resume.");
     }
 
     void SpawnMarker(float time, int lane)

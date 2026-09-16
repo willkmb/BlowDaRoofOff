@@ -103,6 +103,8 @@ public class NoteHitDetector : MonoBehaviour
                 if (diffFromTarget <= perfectTolerance) { sticker.Spawn("Perfect"); combo.RegisterPerfect(); }
                 else if (diffFromTarget <= goodTolerance) { sticker.Spawn("Good"); combo.RegisterGood(); }
                 else { sticker.Spawn("Late"); combo.RegisterLate(); }
+
+                CameraShake.Instance.Shake();
             }
             else
             {
