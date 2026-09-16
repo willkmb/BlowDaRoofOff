@@ -78,7 +78,7 @@ public class BeatRecorder : MonoBehaviour
         {
             float resumeTime = Mathf.Max(0f, audioSource.time - resumeLeadIn);
             audioSource.time = resumeTime;
-            UpdateMarkerPositions(resumeTime); // snap cubes to match before playback starts
+            UpdateMarkerPositions(resumeTime);
 
             audioSource.UnPause();
         }
@@ -95,19 +95,16 @@ public class BeatRecorder : MonoBehaviour
         int lastIndex = markers.Count - 1;
         Marker last = markers[lastIndex];
 
-        // Destroy the cube and remove it from the list
         if (last.transform != null)
         {
             Destroy(last.transform.gameObject);
         }
         markers.RemoveAt(lastIndex);
 
-        // Rewind the song to that marker's time (still paused)
         audioSource.time = last.hitTime;
 
         UpdateMarkerPositions(last.hitTime);
 
-        Debug.Log("Undid marker, rewound to " + last.hitTime + ". Press " + pauseKey + " to resume.");
     }
 
     void SpawnMarker(float time, int lane)
