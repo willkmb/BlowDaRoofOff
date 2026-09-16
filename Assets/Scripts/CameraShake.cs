@@ -20,14 +20,14 @@ public class CameraShake : MonoBehaviour
     public void Shake()
     {
         StopAllCoroutines();
-        originalPos = transform.localPosition;
+        transform.localPosition = originalPos;
         StartCoroutine(DoShake(magnitude));
     }
 
     public void ShakeMiss()
     {
         StopAllCoroutines();
-        originalPos = transform.localPosition;
+        transform.localPosition = originalPos;
         StartCoroutine(DoShake(missMagnitude));
     }
 

@@ -49,8 +49,15 @@ public class NoteHitDetector : MonoBehaviour
         activeNotes.Add(this);
 
         heldChild = transform.Find("Held");
-        heldRend = heldChild.GetComponent<Renderer>();
-        setHeldColour(heldInactiveCol);
+        if (heldChild != null && heldChild.gameObject.activeSelf)
+        {
+            heldRend = heldChild.GetComponent<Renderer>();
+            setHeldColour(heldInactiveCol);
+        }
+        else
+        {
+            heldChild = null;
+        }
     }
 
     void OnDestroy()
