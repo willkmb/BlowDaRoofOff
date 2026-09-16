@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ad2e697a6ac6c4d9b4e544d0beb897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 102
+  keys: 66000000
   newnote: {fileID: 1449836568719693334}
   blankCol: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
   Ready: {r: 0.2, g: 0.4117647, b: 0.50980395, a: 1}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NoteHitDetector : MonoBehaviour
 {
-    public KeyCode key;
+    public KeyCode[] keys = new KeyCode[1];
     private Transform hitZone;
     private float hitRange;
     private float colChangeRange;
@@ -69,7 +69,7 @@ public class NoteHitDetector : MonoBehaviour
     {
         if (hasBeenHit)
         {
-            if(isHolding && Input.GetKeyUp(key))
+            if(isHolding && anyKeyUp())
             {
                 releaseHold();
             }
@@ -98,7 +98,7 @@ public class NoteHitDetector : MonoBehaviour
             return;
         }
 
-        if (distance <= master.HitRangeBefore && Input.GetKeyDown(key) && IsClosestForKey(distance))
+        if (distance <= master.HitRangeBefore && anyKeyDown() && IsClosestForKey(distance))
         {
             hasBeenHit = true;
             float diffFromTarget = Mathf.Abs(distance - master.HitRangeBefore);
@@ -143,13 +143,42 @@ public class NoteHitDetector : MonoBehaviour
     {
         foreach (var note in activeNotes)
         {
-            if (note != this && !note.hasBeenHit && note.key == key)
+            if (note != this && !note.hasBeenHit && SharesKey(note))
             {
                 float otherDist = Mathf.Abs(note.transform.position.x - hitZone.position.x);
                 if (otherDist < myDistance) return false;
             }
         }
         return true;
+    }
+
+    bool anyKeyDown()
+    {
+        foreach(var key in keys)
+        {
+            if (Input.GetKeyDown(key)) return true;
+        }
+        return false;
+    }
+    bool anyKeyUp()
+    {
+        foreach (var key in keys)
+        {
+            if (Input.GetKeyUp(key)) return true;
+        }
+        return false;
+    }
+
+    bool SharesKey(NoteHitDetector other)
+    {
+        foreach (var key in keys)
+        {
+            foreach (var ok in other.keys)
+            {
+                if (key == ok) return true;
+            }
+        }
+        return false;
     }
 
     IEnumerator HitRoutine()
