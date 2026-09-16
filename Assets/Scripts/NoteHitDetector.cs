@@ -26,6 +26,13 @@ public class NoteHitDetector : MonoBehaviour
     [SerializeField] float perfectTolerance = 0.4f;
     [SerializeField] float goodTolerance = 0.6f;
 
+    [Header("held notes")]
+    [SerializeField] Color heldActiveCol = Color.yellow;
+    [SerializeField] Color heldInactiveCol = Color.gray;
+    private Transform heldChild;
+    private Renderer heldRend;
+    private bool isHolding = false;
+
     static List<NoteHitDetector> activeNotes = new List<NoteHitDetector>();
 
     private void Start()
@@ -40,6 +47,10 @@ public class NoteHitDetector : MonoBehaviour
         rend = newnote.GetComponent<Renderer>();
         mpb = new MaterialPropertyBlock();
         activeNotes.Add(this);
+
+        heldChild = transform.Find("Held");
+        heldRend = heldChild.GetComponent<Renderer>();
+        setHeldColour(heldInactiveCol);
     }
 
     void OnDestroy()
@@ -49,7 +60,14 @@ public class NoteHitDetector : MonoBehaviour
 
     void Update()
     {
-        if (hasBeenHit) return;
+        if (hasBeenHit)
+        {
+            if(isHolding && Input.GetKeyUp(key))
+            {
+                releaseHold();
+            }
+            return;
+        }
 
         float offset = transform.position.x - hitZone.position.x;
         float distance = Mathf.Abs(offset);
@@ -76,18 +94,41 @@ public class NoteHitDetector : MonoBehaviour
         if (distance <= master.HitRangeBefore && Input.GetKeyDown(key) && IsClosestForKey(distance))
         {
             hasBeenHit = true;
-
             float diffFromTarget = Mathf.Abs(distance - master.HitRangeBefore);
 
-            if (diffFromTarget <= perfectTolerance) { sticker.Spawn("Perfect"); combo.RegisterPerfect(); }
-            else if (diffFromTarget <= goodTolerance) { sticker.Spawn("Good"); combo.RegisterGood(); }
-            else { sticker.Spawn("Late"); combo.RegisterLate(); }
+            if(heldChild != null)
+            {
+                isHolding = true;
+                setHeldColour(heldActiveCol);
+                if (diffFromTarget <= perfectTolerance) { sticker.Spawn("Perfect"); combo.RegisterPerfect(); }
+                else if (diffFromTarget <= goodTolerance) { sticker.Spawn("Good"); combo.RegisterGood(); }
+                else { sticker.Spawn("Late"); combo.RegisterLate(); }
+            }
+            else
+            {
+                if (diffFromTarget <= perfectTolerance) { sticker.Spawn("Perfect"); combo.RegisterPerfect(); }
+                else if (diffFromTarget <= goodTolerance) { sticker.Spawn("Good"); combo.RegisterGood(); }
+                else { sticker.Spawn("Late"); combo.RegisterLate(); }
 
-            StartCoroutine(HitRoutine());
+                StartCoroutine(HitRoutine());
+            }
         }
     }
 
+    void releaseHold()
+    {
+        isHolding = false;
+        setHeldColour(heldInactiveCol);
+        StartCoroutine(HitRoutine());
+    }
 
+    void setHeldColour(Color col)
+    {
+        MaterialPropertyBlock heldMpb = new MaterialPropertyBlock();
+        heldRend.GetPropertyBlock(heldMpb, 0);
+        heldMpb.SetColor(BaseColID, col);
+        heldRend.SetPropertyBlock(heldMpb, 0);
+    }
 
     bool IsClosestForKey(float myDistance)
     {
