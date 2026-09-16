@@ -12953,7 +12953,7 @@ MonoBehaviour:
   - {fileID: 1746262626}
   - {fileID: 931298002}
   - {fileID: 94813068}
-  drainDur: 8
+  drainDur: 6.5
   JB: {fileID: 522287836}
   embarrassmentPerLate: 1
   embarrassmentPerMiss: 3
