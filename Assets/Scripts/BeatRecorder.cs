@@ -77,10 +77,11 @@ public class BeatRecorder : MonoBehaviour
         else
         {
             float resumeTime = Mathf.Max(0f, audioSource.time - resumeLeadIn);
+            audioSource.Stop();
             audioSource.time = resumeTime;
-            UpdateMarkerPositions(resumeTime);
+            audioSource.Play();
 
-            audioSource.UnPause();
+            UpdateMarkerPositions(resumeTime);
         }
     }
 
@@ -101,7 +102,10 @@ public class BeatRecorder : MonoBehaviour
         }
         markers.RemoveAt(lastIndex);
 
+        audioSource.Stop();
         audioSource.time = last.hitTime;
+        audioSource.Play();
+        audioSource.Pause();
 
         UpdateMarkerPositions(last.hitTime);
 
