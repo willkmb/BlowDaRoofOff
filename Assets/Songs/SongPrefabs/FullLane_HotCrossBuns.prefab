@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2995679256514139618}
   m_Layer: 0
-  m_Name: Lanes (2)
+  m_Name: FullLane_HotCrossBuns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
